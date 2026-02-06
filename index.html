@@ -1,91 +1,91 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Directorio de Enlaces</title>
-  <meta content="width=device-width,initial-scale=1" name="viewport"/>
-  <style>
-    body { margin: 0; padding: 0; background: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .hidden { display: none !important; }
-    .container { width: 95%; max-width: 480px; margin: 20px auto; background: white; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; box-sizing: border-box; }
-    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-    .btn-folder { background: #6c63ff; color: white; border: none; padding: 18px 5px; border-radius: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
-    .btn-folder:active { transform: scale(0.95); background: #554dfb; }
-    .btn-volver { background: #f1f3f4; border: none; padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 20px; width: 100%; font-weight: bold; color: #555; }
-    .scroll-area { max-height: 500px; overflow-y: auto; padding-right: 5px; }
-    .link-box { display: block; background: #ffffff; padding: 14px; margin-bottom: 10px; border-radius: 12px; text-decoration: none; color: #333; border: 1px solid #eaeaea; font-size: 14px; text-align: left; transition: 0.2s; }
-    .link-box:hover { border-color: #6c63ff; background: #fdfdff; }
-  </style>
-</head>
-<body>
+<script>
+    const grid = document.getElementById('grid-menu'); // Asegúrate de que el div de botones tenga este ID
+    const contenedor = document.getElementById('contenedor-carpetas');
 
-  <div class="container">
-    
-    <div id="main-menu">
-      <h1 style="font-size: 22px; color: #333; margin-bottom: 5px;">Directorio Principal</h1>
-      <p style="color: #888; font-size: 14px;">Selecciona una carpeta</p>
-      <div class="grid-menu">
-        <script>
-          for(let i=1; i<=20; i++) {
-            document.write(`<button class="btn-folder" onclick="openF(${i})">📁 Carpeta ${i}</button>`);
-          }
-        </script>
-      </div>
-    </div>
+    // 1. GENERACIÓN DE BOTONES Y CONTENIDO
+    for(let i=1; i<=20; i++) {
+      
+      // --- CREAR EL BOTÓN ---
+      let btn = document.createElement('button');
+      btn.className = 'btn-folder';
+      btn.innerHTML = `📁 Carpeta ${i}`;
+      btn.onclick = () => openF(i);
+      
+      // Solo le ponemos ID a la carpeta 7 para controlarla por tiempo
+      if(i === 7) {
+        btn.id = 'btn-temporal-7';
+      }
+      
+      document.getElementById('grid-botones').appendChild(btn);
 
-    <div class="hidden" id="f1">
-      <button class="btn-volver" onclick="closeF(1)">← Volver</button>
-      <div class="scroll-area">
-        <script>
-          for(let j=1; j<=50; j++) {
-            document.write(`<a class="link-box" href="#" target="_blank">🔗 Link ${j}</a>`);
-          }
-        </script>
-      </div>
-    </div>
-
-    <div id="carpetas-extra">
-      <script>
-        for(let f=2; f<=20; f++) {
-          document.write(`
-            <div class="hidden" id="f${f}">
-              <button class="btn-volver" onclick="closeF(${f})">← Volver</button>
-              <div class="scroll-area">
-                <a class="link-box" href="#">🔗 Link 1</a>
-                <a class="link-box" href="#">🔗 Link 2</a>
-                <a class="link-box" href="#">🔗 Link 3</a>
-                <a class="link-box" href="#">🔗 Link 4</a>
-                <a class="link-box" href="#">🔗 Link 5</a>
-              </div>
-            </div>
-          `);
+      // --- ESPACIO PARA TUS LINKS ---
+      let contenidoLinks = "";
+      if (i === 7) {
+        // ==========================================
+        // AQUÍ PONES TUS LINKS DE LA CARPETA 7
+        // ==========================================
+        contenidoLinks = `
+          <a class="link-box" href="https://ejemplo.com" target="_blank">🔗 Link Especial 1</a>
+          <a class="link-box" href="https://ejemplo.com" target="_blank">🔗 Link Especial 2</a>
+        `;
+      } else {
+        // Aquí puedes poner links para cualquier otra carpeta específica
+        // Por ejemplo, para la carpeta 1:
+        if(i === 1) {
+          contenidoLinks = `<a class="link-box" href="#">🔗 Enlace de Carpeta 1</a>`;
+        } else {
+          contenidoLinks = generarLinks(3); // El resto tiene 3 links de relleno
         }
-      </script>
-    </div>
+      }
 
-  </div>
-<div style="margin-top: 30px; padding-top: 15px; border-top: 1px dashed #eee; text-align: center;">
-  <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Estadísticas de visitantes</p>
-  <div style="display: flex; justify-content: center;">
-    <a href="https://info.flagcounter.com/sY9x">
-      <img src="https://s11.flagcounter.com/count2/sY9x/bg_FFFFFF/txt_666666/border_FFFFFF/columns_3/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0">
-    </a>
-  </div>
-</div>
+      // Crear el "interior" de la carpeta
+      let div = document.createElement('div');
+      div.id = `f${i}`;
+      div.className = 'hidden';
+      div.innerHTML = `
+        <button class="btn-volver" onclick="closeF(${i})">← Volver</button>
+        <div class="scroll-area">${contenidoLinks}</div>
+      `;
+      document.getElementById('contenedor-carpetas').appendChild(div);
+    }
 
+    function generarLinks(cant) {
+      let html = '';
+      for(let j=1; j<=cant; j++) { html += `<a class="link-box" href="#">🔗 Link de relleno</a>`; }
+      return html;
+    }
 
-  <script>
+    // 2. LÓGICA DE TIEMPO SOLO PARA LA CARPETA 7
+    function temporizadorCarpeta7() {
+      const ahora = new Date();
+      const minutosTotales = ahora.getHours() * 60 + ahora.getMinutes();
+      const posicionCiclo = minutosTotales % 40; // Ciclo de 40 min
+
+      const btn7 = document.getElementById('btn-temporal-7');
+      const carpeta7Abierta = document.getElementById('f7');
+
+      // 10 MINUTOS VISIBLE (del 0 al 9), 30 MINUTOS OCULTO (del 10 al 39)
+      if (posicionCiclo < 10) {
+        btn7.classList.remove('hidden'); 
+      } else {
+        btn7.classList.add('hidden');
+        // Si el usuario está viendo los links de la 7 cuando se acaba el tiempo, lo sacamos
+        if (!carpeta7Abierta.classList.contains('hidden')) {
+            closeF(7);
+        }
+      }
+    }
+
+    // Funciones de navegación
     function openF(n) {
       document.getElementById('main-menu').classList.add('hidden');
-      var el = document.getElementById('f' + n);
-      if(el) el.classList.remove('hidden');
+      document.getElementById('f' + n).classList.remove('hidden');
     }
     function closeF(n) {
-      var el = document.getElementById('f' + n);
-      if(el) el.classList.add('hidden');
+      document.getElementById('f' + n).classList.add('hidden');
       document.getElementById('main-menu').classList.remove('hidden');
     }
-  </script>
 
-</body>
-</html>
+    setInterval(temporizadorCarpeta7, 1000);
+    temporizadorCarpeta7();
+  </script>
