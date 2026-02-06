@@ -1,91 +1,122 @@
-<script>
-    const grid = document.getElementById('grid-menu'); // Asegúrate de que el div de botones tenga este ID
-    const contenedor = document.getElementById('contenedor-carpetas');
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Directorio Maestro</title>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  
+  <script type="text/javascript">
+      var cuty_token = '415c3efe17212860052c31f12';
+      var exclude_domains = ["cpu-don.github.io"];
+  </script>
+  <script src="https://cdn.cuty.io/fps.js"></script>
 
-    // 1. GENERACIÓN DE BOTONES Y CONTENIDO
-    for(let i=1; i<=20; i++) {
-      
-      // --- CREAR EL BOTÓN ---
-      let btn = document.createElement('button');
-      btn.className = 'btn-folder';
-      btn.innerHTML = `📁 Carpeta ${i}`;
-      btn.onclick = () => openF(i);
-      
-      // Solo le ponemos ID a la carpeta 7 para controlarla por tiempo
-      if(i === 7) {
-        btn.id = 'btn-temporal-7';
-      }
-      
-      document.getElementById('grid-botones').appendChild(btn);
+  <style>
+    body { margin: 0; padding: 0; background: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .hidden { display: none !important; }
+    .container { width: 95%; max-width: 480px; margin: 20px auto; background: white; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; box-sizing: border-box; }
+    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+    .btn-folder { background: #6c63ff; color: white; border: none; padding: 18px 5px; border-radius: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
+    .btn-folder:active { transform: scale(0.95); background: #554dfb; }
+    .btn-volver { background: #f1f3f4; border: none; padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 20px; width: 100%; font-weight: bold; color: #555; }
+    .scroll-area { max-height: 500px; overflow-y: auto; padding-right: 5px; }
+    .link-box { display: block; background: #ffffff; padding: 14px; margin-bottom: 10px; border-radius: 12px; text-decoration: none; color: #333; border: 1px solid #eaeaea; font-size: 14px; text-align: left; transition: 0.2s; }
+    .link-box:hover { border-color: #6c63ff; background: #fdfdff; }
+  </style>
+</head>
+<body>
 
-      // --- ESPACIO PARA TUS LINKS ---
-      let contenidoLinks = "";
-      if (i === 7) {
-        // ==========================================
-        // AQUÍ PONES TUS LINKS DE LA CARPETA 7
-        // ==========================================
-        contenidoLinks = `
-          <a class="link-box" href="https://ejemplo.com" target="_blank">🔗 Link Especial 1</a>
-          <a class="link-box" href="https://ejemplo.com" target="_blank">🔗 Link Especial 2</a>
-        `;
-      } else {
-        // Aquí puedes poner links para cualquier otra carpeta específica
-        // Por ejemplo, para la carpeta 1:
-        if(i === 1) {
-          contenidoLinks = `<a class="link-box" href="#">🔗 Enlace de Carpeta 1</a>`;
-        } else {
-          contenidoLinks = generarLinks(3); // El resto tiene 3 links de relleno
-        }
-      }
+  <div class="container">
+    
+    <div id="main-menu">
+      <h1 style="font-size: 22px; color: #333; margin-bottom: 5px;">Directorio Principal</h1>
+      <p style="color: #888; font-size: 14px;">Selecciona una carpeta</p>
+      <div class="grid-menu">
+        <button class="btn-folder" onclick="openF(1)">📁 Carpeta 1</button>
+        <button class="btn-folder" onclick="openF(2)">📁 Carpeta 2</button>
+        <button class="btn-folder" onclick="openF(3)">📁 Carpeta 3</button>
+        <button class="btn-folder" onclick="openF(4)">📁 Carpeta 4</button>
+        <button class="btn-folder" onclick="openF(5)">📁 Carpeta 5</button>
+        <button class="btn-folder" onclick="openF(6)">📁 Carpeta 6</button>
+        <button class="btn-folder" id="btn-7" onclick="openF(7)">📁 Carpeta 7</button>
+        <button class="btn-folder" onclick="openF(8)">📁 Carpeta 8</button>
+        <button class="btn-folder" onclick="openF(9)">📁 Carpeta 9</button>
+        <button class="btn-folder" onclick="openF(10)">📁 Carpeta 10</button>
+        <button class="btn-folder" onclick="openF(11)">📁 Carpeta 11</button>
+        <button class="btn-folder" onclick="openF(12)">📁 Carpeta 12</button>
+        <button class="btn-folder" onclick="openF(13)">📁 Carpeta 13</button>
+        <button class="btn-folder" onclick="openF(14)">📁 Carpeta 14</button>
+        <button class="btn-folder" onclick="openF(15)">📁 Carpeta 15</button>
+        <button class="btn-folder" onclick="openF(16)">📁 Carpeta 16</button>
+        <button class="btn-folder" onclick="openF(17)">📁 Carpeta 17</button>
+        <button class="btn-folder" onclick="openF(18)">📁 Carpeta 18</button>
+        <button class="btn-folder" onclick="openF(19)">📁 Carpeta 19</button>
+        <button class="btn-folder" onclick="openF(20)">📁 Carpeta 20</button>
+      </div>
+    </div>
 
-      // Crear el "interior" de la carpeta
-      let div = document.createElement('div');
-      div.id = `f${i}`;
-      div.className = 'hidden';
-      div.innerHTML = `
-        <button class="btn-volver" onclick="closeF(${i})">← Volver</button>
-        <div class="scroll-area">${contenidoLinks}</div>
-      `;
-      document.getElementById('contenedor-carpetas').appendChild(div);
-    }
+    <div id="f1" class="hidden">
+      <button class="btn-volver" onclick="closeF(1)">← Volver</button>
+      <div class="scroll-area">
+        <a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 1</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 2</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 3</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 4</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 5</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 6</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 7</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 8</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 9</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 10</a>
+        <a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 11</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 12</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 13</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 14</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 15</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 16</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 17</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 18</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 19</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 20</a>
+        <a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 21</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 22</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 23</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 24</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 25</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 26</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 27</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 28</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 29</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 30</a>
+        <a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 31</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 32</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 33</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 34</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 35</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 36</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 37</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 38</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 39</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 40</a>
+        <a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 41</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 42</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 43</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 44</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 45</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 46</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 47</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 48</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 49</a><a class="link-box" href="AQUÍ_VA_TU_LINK">🔗 Link 50</a>
+      </div>
+    </div>
 
-    function generarLinks(cant) {
-      let html = '';
-      for(let j=1; j<=cant; j++) { html += `<a class="link-box" href="#">🔗 Link de relleno</a>`; }
-      return html;
-    }
+    <div id="f2" class="hidden"><button class="btn-volver" onclick="closeF(2)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f3" class="hidden"><button class="btn-volver" onclick="closeF(3)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f4" class="hidden"><button class="btn-volver" onclick="closeF(4)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f5" class="hidden"><button class="btn-volver" onclick="closeF(5)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f6" class="hidden"><button class="btn-volver" onclick="closeF(6)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    
+    <div id="f7" class="hidden"><button class="btn-volver" onclick="closeF(7)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
 
-    // 2. LÓGICA DE TIEMPO SOLO PARA LA CARPETA 7
-    function temporizadorCarpeta7() {
-      const ahora = new Date();
-      const minutosTotales = ahora.getHours() * 60 + ahora.getMinutes();
-      const posicionCiclo = minutosTotales % 40; // Ciclo de 40 min
+    <div id="f8" class="hidden"><button class="btn-volver" onclick="closeF(8)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f9" class="hidden"><button class="btn-volver" onclick="closeF(9)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f10" class="hidden"><button class="btn-volver" onclick="closeF(10)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f11" class="hidden"><button class="btn-volver" onclick="closeF(11)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f12" class="hidden"><button class="btn-volver" onclick="closeF(12)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f13" class="hidden"><button class="btn-volver" onclick="closeF(13)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f14" class="hidden"><button class="btn-volver" onclick="closeF(14)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f15" class="hidden"><button class="btn-volver" onclick="closeF(15)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f16" class="hidden"><button class="btn-volver" onclick="closeF(16)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f17" class="hidden"><button class="btn-volver" onclick="closeF(17)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f18" class="hidden"><button class="btn-volver" onclick="closeF(18)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f19" class="hidden"><button class="btn-volver" onclick="closeF(19)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
+    <div id="f20" class="hidden"><button class="btn-volver" onclick="closeF(20)">← Volver</button><div class="scroll-area"><a class="link-box" href="URL">🔗 Link 1</a><a class="link-box" href="URL">🔗 Link 2</a><a class="link-box" href="URL">🔗 Link 3</a><a class="link-box" href="URL">🔗 Link 4</a><a class="link-box" href="URL">🔗 Link 5</a><a class="link-box" href="URL">🔗 Link 6</a><a class="link-box" href="URL">🔗 Link 7</a><a class="link-box" href="URL">🔗 Link 8</a><a class="link-box" href="URL">🔗 Link 9</a><a class="link-box" href="URL">🔗 Link 10</a></div></div>
 
-      const btn7 = document.getElementById('btn-temporal-7');
-      const carpeta7Abierta = document.getElementById('f7');
+  </div>
 
-      // 10 MINUTOS VISIBLE (del 0 al 9), 30 MINUTOS OCULTO (del 10 al 39)
-      if (posicionCiclo < 10) {
-        btn7.classList.remove('hidden'); 
-      } else {
-        btn7.classList.add('hidden');
-        // Si el usuario está viendo los links de la 7 cuando se acaba el tiempo, lo sacamos
-        if (!carpeta7Abierta.classList.contains('hidden')) {
-            closeF(7);
-        }
-      }
-    }
-
-    // Funciones de navegación
+  <script>
     function openF(n) {
       document.getElementById('main-menu').classList.add('hidden');
-      document.getElementById('f' + n).classList.remove('hidden');
+      var folder = document.getElementById('f' + n);
+      if(folder) folder.classList.remove('hidden');
     }
     function closeF(n) {
-      document.getElementById('f' + n).classList.add('hidden');
+      var folder = document.getElementById('f' + n);
+      if(folder) folder.classList.add('hidden');
       document.getElementById('main-menu').classList.remove('hidden');
     }
 
-    setInterval(temporizadorCarpeta7, 1000);
-    temporizadorCarpeta7();
+    function checkTime() {
+      const now = new Date();
+      const pos = (now.getHours() * 60 + now.getMinutes()) % 40; 
+      const b7 = document.getElementById('btn-7');
+      const f7 = document.getElementById('f7');
+
+      if (pos < 10) {
+        b7.classList.remove('hidden');
+      } else {
+        b7.classList.add('hidden');
+        if (!f7.classList.contains('hidden')) closeF(7);
+      }
+    }
+    setInterval(checkTime, 1000);
+    checkTime();
   </script>
+</body>
+</html>
